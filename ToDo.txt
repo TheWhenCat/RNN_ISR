@@ -1,0 +1,19 @@
+This file a list of ToDO for this Network
+
+The final goal is to create a Robinhood API trading bot
+
+Part A:
+-Created the Neural network template
+--Finished with backprop
+--Working on updating weights and adding repitions for backprop
+---Need to format better
+-Process data packets to test other than sample in initial tempelate (Data.csv)
+--Use Udemy Tutorial
+*Use Neural Network book to modify and improve existing template
+
+Part B:
+-Set up wrapper to communicate with the Robinhood API
+--Set up convolutional part of the network
+
+Part C:
+-Deploy!!!
