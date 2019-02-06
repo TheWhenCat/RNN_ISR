@@ -25,11 +25,12 @@ X[0:, 7:13] = imputer.transform(X[0:, 7:13])
 #Not working come back to this
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 labelencoder_X = LabelEncoder()
+X = X[0:, :]
 X[0:, 2] = labelencoder_X.fit_transform(X[0:, 2])
 X[0:, 4] = labelencoder_X.fit_transform(X[0:, 4])
 X[0:, 5] = labelencoder_X.fit_transform(X[0:, 5])
-#onehotencoder = OneHotEncoder(categorical_features = [2,4,5])
-#X[0:, 2] = onehotencoder.fit_transform(X).toarray()
+onehotencoder = OneHotEncoder(categorical_features = [2,4,5])
+X = onehotencoder.fit_transform(X).toarray()
 
 labelencoder_Y = LabelEncoder()
 Y = labelencoder_Y.fit_transform(Y)
@@ -38,11 +39,35 @@ Y = labelencoder_Y.fit_transform(Y)
 from sklearn.model_selection import train_test_split
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
 
-print("Y_Test: ", len(Y_test))
 
 #Rescalign the Features (evening them out)
 from sklearn.preprocessing import StandardScaler
 sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
-print("X_Train: ", X_train)
+print(X)
+
+#Part 2 - ANN!
+
+#Import Keras
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+# Initialize the ANN
+classifier = Sequential()
+
+#Add the input layer and hidden layer #1
+classifier.add(Dense(output_dim=6, init="uniform", activation = "relu", input_dim=11))
+
+#Adding 2nd Hidden Layer
+classifier.add(Dense(output_dim=6, init="uniform", activation = "relu"))
+
+#Adding Output Layer
+classifier.add(Dense(output_dim=1, init="uniform", activation = "sigmoid"))
+
+#Compiling the ANN
+classifier.compile(optimizer="adam", loss="binary_crossentropy",metrics=["accuracy"])
+
+#Fitting ANN to Training Set
+classifier.fit(X_train, Y_train, batch_size=10, epochs=200)
